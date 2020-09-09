@@ -1,0 +1,64 @@
+General Approach:
+if we have only one kind of parenthesis then we can take a variable to keep count of left parenthesis say left so when we encounter left parenthesis we can increment left by 1 
+and as we see right parenthesis we decrement left if it not zero otherwise we return false because there is no open parenthesis for that closing parenthesis. At the end we return 
+true if it is 0 else false.
+
+if we have multiple kind of parenthesis then we can take diff left variables for each kind and do the same thing but it'll not serve our purpose because order is also important.
+e.g
+       (   [      )    ]
+     lc=1  ls=1  lc=0  ls=0
+     
+     In this case lc and ls both are 0 and it will return true but it is not balanced.
+     
+********Using Stack********
+
+class Solution {
+    public boolean isValid(String s) {
+        
+        Stack<Character> stack = new Stack<>();
+        
+        for(int i=0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == '(')
+                stack.push(')');
+            else if(c == '{')
+                stack.push('}');
+            else if(c == '[')
+                stack.push(']');
+            else if(stack.empty() || stack.pop() != c)
+                return false;
+        }
+        return stack.empty();
+    }
+}
+// Time Complexity : O(n) 
+// Space Complexity : O(n)
+where n is length of string
+
+*******Using HashMap*********
+
+class Solution {
+    public boolean isValid(String s) {
+        
+        Map<Character, Character> map = new HashMap<>();
+        Stack<Character> stack = new Stack<>();
+        
+        map.put(')', '(');
+        map.put(']', '[');
+        map.put('}', '{');
+        
+        for(int i=0; i < s.length(); i++){
+            if(! stack.empty() && stack.peek() == map.get(s.charAt(i))){
+                stack.pop();
+            }
+            else
+                stack.push(s.charAt(i));
+        }
+        return stack.empty();
+    }
+}
+// Time Complexity : O(n) 
+// Space Complexity : O(n)
+where n is length of string
+
+
