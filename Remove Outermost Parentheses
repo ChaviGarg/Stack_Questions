@@ -1,0 +1,60 @@
+// Using Stack
+
+class Solution {
+    public String removeOuterParentheses(String S) {
+        
+        Stack<Character> stack = new Stack<>();
+        String result = "";
+        
+        for(int i=0 ; i < S.length(); i++){
+            char c = S.charAt(i);
+            if(stack.empty()){
+                stack.push('$');
+            }    
+            else if(c == '('){
+                stack.push('(');
+                result += c;
+            }
+            else if(stack.peek() == '$'){
+                stack.pop();
+            }    
+            else if(c == ')'){
+                stack.pop();
+                result += c;
+            }        
+        }
+       return result; 
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(n)
+
+
+//  More suitable Approach
+
+class Solution {
+    public String removeOuterParentheses(String S) {
+        
+        String result = "";
+        int open = 0;
+        
+        for(int i=0 ; i < S.length(); i++){
+            char c = S.charAt(i);
+            if(c == '('){
+               if(open != 0) 
+                   result += c;
+               open++; 
+            }    
+            if(c == ')'){
+                if(open > 1)
+                   result += c;
+                open--;  
+            }    
+        }
+       return result; 
+    }
+}
+// Time Complexity : O(n)
+// Space Complexity : O(1)
+
