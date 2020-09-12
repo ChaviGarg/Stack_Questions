@@ -1,0 +1,51 @@
+******Bruteforce Approach******
+
+Iterate the resultant string again and again until we no longer can find duplicates.
+
+// Time Complexity : O(n2) -> worst case
+// Space Complexity : O(n2) -> we need to create new string everytime.
+
+
+****** Using Stack ******
+
+class Solution {
+    public String removeDuplicates(String S) {
+ 
+        String result = "";
+        Stack<Character> stack = new Stack<>();
+        
+        for(int i=S.length()-1; i>=0; i--)
+        {
+            char c = S.charAt(i);
+            if(! stack.empty() && c == stack.peek())
+                stack.pop();
+            else
+                stack.push(c);
+        }
+        while(! stack.empty())
+            result += stack.pop();
+        
+       return result; 
+    }
+}
+
+****** Using Two pointers *******
+
+class Solution {
+    public String removeDuplicates(String S) {
+        
+        char res[] = S.toCharArray();
+        int i=0, j=0;
+        
+        for(i=0, j=0; j < res.length; i++, j++){
+            res[i] = res[j];
+            if(i > 0 && res[i-1] == res[i]){
+                i -= 2;
+            }
+        }
+        return new String(res, 0, i);
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(n)
