@@ -1,0 +1,34 @@
+******* Approach-1 *******
+
+Using double length array for every element of the input array we need to scan through all the other elements in worst case.
+Time Complexity : O(n2)
+Space Complexity : O(n)
+
+******* Approach-2 *******
+
+Better bruteforce force. Instead of creating double length array traverse the array circularly.
+Time Complexity : O(n2)
+Space Complexity : O(n)
+
+****** Approach-3 (Use of Stack) ********
+
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        
+        Stack<Integer> stack = new Stack<>();
+        int n = nums.length;
+        int output[] = new int[n];
+        Arrays.fill(output, -1);
+        
+        for(int i = 0; i < 2*n; i++){
+            while(! stack.isEmpty() && nums[stack.peek()] < nums[i % n]){
+                output[stack.pop()] = nums[i % n];
+            }
+            stack.push(i % n);
+        }
+       return output; 
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(n)
