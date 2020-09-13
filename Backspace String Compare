@@ -1,0 +1,87 @@
+// Using Stack
+
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        
+        Stack<Character> stack = new Stack<>();
+        
+        for(int i=0; i < S.length(); i++){
+            char c = S.charAt(i);
+            if(! stack.empty() && c == '#')
+                stack.pop();
+            else if(c != '#')
+                stack.push(c);
+        }
+        String str = "";
+        for(char c : stack){
+           str += c; 
+        }
+        
+        stack.clear();
+        
+        for(int i=0; i < T.length(); i++){
+            char c = T.charAt(i);
+            if(! stack.empty() && c == '#')
+                stack.pop();
+            else if(c != '#')
+                stack.push(c);
+        }
+        String Tstr = "";
+        for(char c : stack){
+            Tstr += c;
+        }
+        
+        return str.equals(Tstr);
+    }
+}
+
+// Time Complexity : O(m + n)
+// Space Complexity : O(m + n)
+
+
+****** Using Two Pointers ********
+
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        
+        int i= S.length()-1, j = T.length()-1;
+        int skipS = 0, skipT = 0;        
+        while(i >= 0 || j >= 0){
+            while(i >= 0){
+                char c = S.charAt(i);
+                if(c == '#'){
+                    skipS++;
+                    i--;
+                }
+                else if(skipS > 0){
+                    skipS--;
+                    i--;
+                }
+                else   
+                    break;
+            }
+            while(j >= 0){
+                char c = T.charAt(j);
+                if(c == '#'){
+                    skipT++;
+                    j--;
+                }
+                else if(skipT > 0){
+                    skipT--;
+                    j--;
+                }
+                else
+                    break;
+            }
+            if(i >= 0 && j >= 0 && S.charAt(i) != T.charAt(j))
+                return false;
+            if((i >= 0) != (j >= 0))
+                return false;
+            
+            i--;  j--;
+        }
+        return true;
+    }
+}
+// Time Complexity : O( m + n)
+// Space Complexity : O(1)
