@@ -1,0 +1,25 @@
+******* Stack Approach *******
+
+class StockSpanner {
+
+    Stack<Integer> stack, weight;
+    public StockSpanner() {
+        stack = new Stack<>();
+        weight = new Stack<>();
+    }
+    
+    public int next(int price) {
+        int w = 1;
+        while(! stack.isEmpty() && stack.peek() <= price){
+            stack.pop();
+            w += weight.pop();
+        }
+        stack.push(price);
+        weight.push(w);
+        
+        return w;
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(n)
