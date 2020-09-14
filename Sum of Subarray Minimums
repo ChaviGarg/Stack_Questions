@@ -1,0 +1,55 @@
+********** Bruteforce Approach ***********
+
+Generate all the possible subarrays and then find minimum from all the subarrays.
+Time Complexity : O(n3)
+
+********** Optimised bruteforce **********
+
+while finding the subarrays we can find the minimum.
+Time Complexity : O(n2)
+
+********* Most Optimised Approach *********
+
+We need to find min value from all the subarray if for a particular element we can find out that element is min in how many subarrays then we can find the total min sum. For that 
+we'll need prev less and next less sum for every element because that we'll be the range in whose subarrays that element is minimum.
+
+class Solution {
+    public int sumSubarrayMins(int[] A) {
+        
+        int left[] = new int[A.length];
+        int right[] = new int[A.length];
+        
+        for(int i=0; i < A.length; i++){
+            left[i] = i+1;
+        }
+        for(int i=0; i < A.length; i++){
+            right[i] = A.length - i;
+        }
+        
+        Stack<Integer> stack = new Stack<>();
+        
+        for(int i=A.length-1; i >= 0 ; i--){
+            while(! stack.empty() && A[i] <= A[stack.peek()]){
+                left[stack.peek()] = stack.pop() - i;
+            }
+            stack.push(i);
+        }
+        stack = new Stack<>();
+        for(int i=0; i < A.length; i++){
+            while(! stack.empty() && A[i] < A[stack.peek()]){
+                right[stack.peek()] = i - stack.pop();
+            }
+            stack.push(i);
+        }
+        
+        int min_sum = 0, mod = (int)1e9 + 7;
+        for(int i=0; i < A.length; i++){
+            min_sum = min_sum + (left[i] * right[i] * A[i]);
+            min_sum %= mod;
+        }
+        return min_sum ;
+    }
+}
+// Time Complexity : O(n)
+// Space Complexity : O(n)
+
