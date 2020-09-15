@@ -1,0 +1,35 @@
+class Solution {
+    public String decodeAtIndex(String S, int K) {
+        
+        long size = 0;
+        
+        for(int i=0; i < S.length(); i++){
+            char c = S.charAt(i);
+            if(Character.isDigit(c)){
+                size += (size * ((c-'0')-1));
+            }
+            else{
+                size++;
+            }     
+        }
+        
+        for(int i = S.length()-1; i >=0 ; i--){
+            char c = S.charAt(i);
+
+            K %= size;
+            
+            if(K == 0 && Character.isLetter(c))
+                return Character.toString(c); 
+            else if(Character.isDigit(c)){
+                size /= (c - '0');
+            }
+            else{
+                size--;
+            }
+        }
+       return null; 
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(1)
