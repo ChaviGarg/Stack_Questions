@@ -1,0 +1,47 @@
+class Solution {
+    public int minAddToMakeValid(String S) {
+        
+        int open = 0, close = 0;
+        
+        for(int i=0; i < S.length(); i++){
+            char c = S.charAt(i);
+            if(c == '(')
+                open++;
+            if(c == ')'){
+                if(open == 0)
+                    close++;
+                else
+                    open--;
+            }
+           
+        }
+      return open + close;
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(1)
+
+
+Stack Approach(Not required)
+
+class Solution {
+    public int minAddToMakeValid(String S) {
+        
+        Stack<Character> stack = new Stack<>();
+        
+        for(int i=0; i < S.length(); i++){
+            char c = S.charAt(i);
+            if(! stack.empty() && c == ')' && stack.peek() == '('){
+                stack.pop();
+            }
+            else{
+                stack.push(c); 
+            }
+        }
+      return stack.size();  
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(n)
