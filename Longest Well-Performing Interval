@@ -1,0 +1,58 @@
+******** Bruteforce **********
+
+Consider all possible subarrays and then iterate through each subarray to find the length where difference between tiring and non tiring days will be max.
+
+Time Complexity : O(n3)
+
+******** Optimised Bruteforce ********
+
+Instead of iterating through each subarray, we can find the max difference in constant time by making two prefix arrays for tiring and non tiring days.
+
+Time Complexity : O(n2)
+Space Complexity : O(n)
+
+e.g.     input =   [9,9,6,0,6,6,9]
+prefixTiringDays = [1,2,2,2,2,2,3]
+prefixNonTiring  = [0,0,1,2,3,4,4]
+
+To decide whether a subarray from i to j is well-performing, we compute:
+nbTiringDays-nbNonTiring, where
+- nbTiringDays = prefixTiringDays[j]-prefixTiringDays[i-1]
+- And nbNonTiring = prefixNonTiring[j]-prefixNonTiring[i-1]
+If the value is greater than 0 the answer is yes, otherwise it is not a well-performing interval.
+
+We can optimized space by using only one prefix array because we are only concerned about the difference. 
+we maintain only one array of differences, where we increment by 1 if the current day is a tiring day and we decrement if it is non tiring.
+
+input  = [9,9,6,0,6,6,9]
+prefix = [1,2,1,0,-1,-2,-1]
+and nbTiringDays-nbNonTiring = prefix[j]-prefix[i-1]
+
+************ O(n) Time and space *********
+
+Instead of finding all possible subarrays in O(n2) time, we can consider each index as the end index and we can find start index in constant time by using prefix values.
+It prefix[i] is not greater then 0 then the start index will be the leftmost index where the value at this index is equal to prefix[i-1]. 
+We can store prefix as a key and index as a value so that at every index we can find the start index.
+
+Solution****
+
+class Solution {
+    public int longestWPI(int[] hours) {
+        
+        int prefix = 0, res = 0;
+        Map<Integer, Integer> seen = new HashMap<>();
+        
+        for(int i=0; i < hours.length; i++){
+            prefix += hours[i] > 8 ? 1 : -1;
+            if(prefix > 0)
+                res = i+1;
+            else{
+                seen.putIfAbsent(prefix, i);
+                if(seen.containsKey(prefix-1)){
+                    res = Math.max(res, i - seen.get(prefix-1));
+                }
+            }
+        }
+      return res;  
+    }
+}
