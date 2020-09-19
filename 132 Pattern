@@ -1,0 +1,69 @@
+******** Bruteforce Approach O(n3), O(1)*******
+
+The simplest solution is to consider every triplet (i, j, k)(i,j,k) and check if the corresponding numbers satisfy the 132 criteria. If any such triplet is found, 
+we can return a True value. If no such triplet is found, we need to return a False value.
+
+public class Solution {
+    public boolean find132pattern(int[] nums) {
+        for (int i = 0; i < nums.length - 2; i++) {
+            for (int j = i + 1; j < nums.length - 1; j++) {
+                for (int k = j + 1; k < nums.length; k++) {
+                    if (nums[k] > nums[i] && nums[j] > nums[k])
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+******* Optimised bruteforce approach ******
+
+We do not need to check all the pairs, we can first find the (i,j) pair and if that pair exists then we can try to find the nums[k] value which is greater than nums[i] and less
+than nums[j]
+
+class Solution {
+    public boolean find132pattern(int[] nums) {
+        int min_i = Integer.MAX_VALUE;
+        
+        for(int j=0; j < nums.length; j++){
+            min_i = Math.min(min_i, nums[j]);
+            for(int k = j+1; k < nums.length; k++){
+                if(nums[k] > min_i && nums[k] < nums[j])
+                    return true;
+            }
+        }
+       return false; 
+    }
+}
+
+********* Stack O(n) time and O(n) space approach *********
+
+class Solution {
+    public boolean find132pattern(int[] nums) {
+        
+        if(nums == null || nums.length < 3)
+            return false;
+        
+        int minArr[] = new int[nums.length];
+        minArr[0] = nums[0];
+        
+        for(int i=1; i < nums.length; i++){
+            minArr[i] = Math.min(nums[i], minArr[i-1]);
+        }
+        Stack<Integer> stack = new Stack<>();
+        stack.push(nums[nums.length-1]);
+        
+        for(int i = nums.length-2; i >= 0; i--){
+            if(minArr[i] < nums[i]){
+                while(! stack.isEmpty() && stack.peek() <= minArr[i]){
+                    stack.pop();
+                }
+                if(! stack.isEmpty() && stack.peek() < nums[i])
+                    return true;
+            }
+            stack.push(nums[i]);
+        }
+        return false;
+    }
+}
