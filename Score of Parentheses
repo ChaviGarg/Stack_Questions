@@ -1,0 +1,53 @@
+************Stack and Recursion O(n), O(n) approach ********
+
+class Solution {
+      int pair[];
+    public int scoreOfParentheses(String S) {
+        
+        Stack<Integer> opened = new Stack<>();
+        pair = new int[S.length()];
+            
+        for(int i=0; i < S.length(); i++){
+            if(S.charAt(i) == '(')
+                opened.push(i);
+            else{
+                int j = opened.pop();
+                pair[j] = i; 
+            }
+        }   
+        return helper(0, S.length()-1);
+    }
+    private int helper(int low, int high){
+        if(low + 1 == high)
+            return 1;
+        int mid = pair[low];
+        if(mid == high)
+            return (2* helper(low+1, high-1));
+        
+        return helper(low, mid) + helper(mid+1, high);
+    }
+}
+
+*************** O(n), O(1) Approach ***********
+
+class Solution {
+    public int scoreOfParentheses(String S) {
+        
+        Stack<Integer> stack = new Stack<>();
+        int score = 0;
+        
+        for(char c : S.toCharArray())
+        {
+            if(c == '(')
+            {
+                stack.push(score);
+                score = 0;
+            }
+            else
+            {
+                score = stack.pop() + Math.max(2*score,1);
+            }
+        }
+        return score;
+    }
+}
