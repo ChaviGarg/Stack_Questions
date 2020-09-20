@@ -1,0 +1,69 @@
+************ 1st Approach ********
+
+class Solution {
+    public String reverseParentheses(String s) {
+        
+        if(s.length() == 0)
+            return "";
+        
+        Stack<Character> stack = new Stack<>();
+        
+        for(int i=0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c != ')'){
+                stack.push(c);
+            }
+            else{
+                String temp = "";
+                while(stack.peek() != '('){
+                    temp += stack.pop();
+                }
+                stack.pop();
+                for(char ch : temp.toCharArray()){
+                    stack.push(ch);
+                }
+            }
+        }
+        String result = "";
+        
+        for(char c : stack){
+            result += c;
+        }
+        return result;
+    }
+}
+// Time Complexity : O(n)
+// Space Complexity : O(n)
+
+
+******** Better Approach ******
+
+class Solution {
+    public String reverseParentheses(String s) {
+        
+        Stack<Integer> opened = new Stack<>();
+        int pair[] = new int[s.length()];
+        
+        for(int i=0; i < s.length(); i++){
+            if(s.charAt(i) == '(')
+                opened.push(i);
+            else if(s.charAt(i) == ')'){
+                int j = opened.pop();
+                pair[i] = j;
+                pair[j] = i;
+            }
+        }
+        String result = "";
+        
+        for(int i=0, d=1; i < s.length(); i+=d){
+            if(s.charAt(i) == '(' || s.charAt(i) == ')'){
+                i = pair[i];
+                d = -d;
+            }
+            else{
+                result += s.charAt(i);
+            }
+        }
+     return result;   
+    }
+}
