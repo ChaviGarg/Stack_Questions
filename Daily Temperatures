@@ -1,0 +1,45 @@
+******** bruteforce approach ******
+
+class Solution {
+    public int[] dailyTemperatures(int[] T) {
+        
+        int result[] = new int[T.length];
+        
+        for(int i=0; i<T.length; i++)
+        {
+           for(int j=i+1; j<T.length; j++)
+           {
+               if(T[j] > T[i])
+               {
+                   int diff = j-i;
+                   result[i] = diff;
+                   break;
+               }
+           }
+        }
+        
+        return result;
+    }
+}
+
+// Time Complexity : O(n2)
+// Space Complexity : O(1) aux space, O(n)-> resultant array
+
+
+******** Optimized O(n), O(n) *********
+
+class Solution {
+    public int[] dailyTemperatures(int[] T) {
+        
+        int output[] = new int[T.length];
+        Stack<Integer> stack = new Stack<>();
+        
+        for(int i=0; i < T.length; i++){
+            while(! stack.isEmpty() && T[i] > T[stack.peek()]){
+                output[stack.peek()] = i - stack.pop();
+            }
+            stack.push(i);
+        }
+        return output;
+    }
+}
