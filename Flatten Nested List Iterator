@@ -1,0 +1,30 @@
+public class NestedIterator implements Iterator<Integer> {
+
+    Queue<Integer> q;
+    
+    public NestedIterator(List<NestedInteger> nestedList) {
+        q = new LinkedList<>();
+        addAll(nestedList);
+    }
+    
+    private void addAll(List<NestedInteger> nestedList){
+        for(NestedInteger ni : nestedList){
+            if(ni.isInteger()){
+                q.offer(ni.getInteger());
+            }
+            else{
+                addAll(ni.getList());
+            }
+        }
+    }
+
+    @Override
+    public Integer next() {
+        return ! q.isEmpty() ? q.poll() : -1;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return  !q.isEmpty();
+    }
+}
