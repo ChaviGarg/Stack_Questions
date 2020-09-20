@@ -1,0 +1,36 @@
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        
+        String res = "";
+        int open = 0;
+        
+        for(int i=0; i < s.length(); i++){
+           char c = s.charAt(i);
+           if(c == '('){
+               open++;
+               res += c;
+           } 
+           else if(c == ')'){
+               if(open != 0)
+                 res += c; 
+               if(open > 0)
+                   open--;
+           }
+            else
+                res += c;
+        }
+        StringBuilder result = new StringBuilder();
+        for(int i= res.length()-1; i >= 0; i--){
+            if(res.charAt(i) == '(' && open > 0){
+                open--;
+            }
+            else{
+                result.append(res.charAt(i));
+            }
+        }
+      return result.reverse().toString();
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(n)
