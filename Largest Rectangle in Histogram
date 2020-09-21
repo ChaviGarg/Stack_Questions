@@ -1,0 +1,40 @@
+********** Bruteforce Approach *********
+
+for every index value we can find the bar having less height on the left side and on the right side.
+
+Time Complexity : O(n2)
+Space Complexity : O(1)
+
+
+********* Stack Approach ************
+
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        
+        if(heights.length == 0)
+            return 0;
+        
+        Stack<Integer> stack = new Stack<>();
+        int area = 0, max_area = 0, i=0;
+        
+        while(i < heights.length){
+            if(stack.isEmpty() || heights[i] > heights[stack.peek()]){
+                stack.push(i++);
+            }
+            else{
+                 int tp = stack.pop();
+                 area = heights[tp] * (stack.empty() ? i : i - stack.peek() -1);
+                 max_area = Math.max(max_area, area);
+            }
+        }
+        while(! stack.isEmpty()){
+            int tp = stack.pop();
+            area = heights[tp] * (stack.empty() ? i : i - stack.peek() - 1);
+            max_area = Math.max(max_area, area);
+        }
+       return max_area; 
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(n)
