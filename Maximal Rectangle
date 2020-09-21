@@ -1,0 +1,61 @@
+************* Bruteforce Approach **********
+
+check every possible rectangle in a 2D Array
+
+Time Complexity : O(n4)
+Space Complexity : O(1)
+
+
+*********** Stack Approach *****************
+
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        
+        if(matrix.length == 0)
+            return 0;
+        
+        int heights[] = new int[matrix[0].length];
+        int max_area = 0, area = 0;
+        
+        for(int i=0; i < matrix.length; i++){
+            for(int j=0; j < matrix[0].length; j++){ 
+               if(i == 0){
+                   heights[j] = (int)matrix[i][j] - '0';
+               }    
+               else{
+                   if(matrix[i][j] == '1')
+                         matrix[i][j] = (char)((int)(matrix[i][j] - '0') + (int)(matrix[i-1][j] - '0') + 48);
+                   heights[j] = (int)matrix[i][j] - '0';
+               }    
+            }
+            area = getMaxAreaRow(heights);
+            max_area = Math.max(max_area, area);
+        }
+       return max_area; 
+    }
+    private int getMaxAreaRow(int heights[]){
+        
+        Stack<Integer> stack = new Stack<>();
+        int area = 0, max_area_row = 0, i=0;
+        
+        while(i < heights.length){
+            if(stack.isEmpty() || heights[i] > heights[stack.peek()])
+                stack.push(i++);
+            else{
+                int tp = stack.pop();
+                area = heights[tp] * (stack.isEmpty() ? i : (i - stack.peek() - 1));
+                max_area_row = Math.max(max_area_row, area);
+            }
+        }
+        while(! stack.isEmpty()){
+            int tp = stack.pop();
+            area = heights[tp] * (stack.isEmpty() ? i : (i - stack.peek() - 1));
+            max_area_row = Math.max(max_area_row, area);
+        }
+        return max_area_row;
+    }
+    
+}
+
+// Time Complexity : O(R * C)
+// Space Complexity : O(C) for the height array and stack
