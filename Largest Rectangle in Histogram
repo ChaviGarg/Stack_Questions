@@ -5,7 +5,56 @@ for every index value we can find the bar having less height on the left side an
 Time Complexity : O(n2)
 Space Complexity : O(1)
 
+Stack better approach as per Aditya verma video:
 
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+
+        int left[] = new int[heights.length];
+        int right[] = new int[heights.length];
+        int maxArea = 0, area=0;
+
+        nextSmallerElementToLeft(heights, left);
+        nextSmallerElementToRight(heights, right);
+        Collections.reverse(Arrays.asList(right)); 
+
+        for(int i=0; i < heights.length; i++){
+             area = (right[i] - left[i] - 1) * heights[i];
+             maxArea = Math.max(maxArea, area);
+        }
+        return maxArea;
+    }
+    private void nextSmallerElementToLeft(int[] heights, int[] left){
+        Stack<Integer> stack = new Stack<>();
+        for(int i=0; i < heights.length; i++){
+            while(stack.size() > 0 && heights[i] <= heights[stack.peek()]){
+                stack.pop();
+            }
+            if(stack.size() == 0)
+                left[i] = -1;
+            else
+                left[i] = stack.peek();
+             
+            stack.push(i);
+        }
+    }
+    private void nextSmallerElementToRight(int[] heights, int[] right){
+        Stack<Integer> stack = new Stack<>();
+        for(int i=heights.length-1; i>=0 ; i--){
+            while(stack.size() > 0 && heights[i] <= heights[stack.peek()]){
+                stack.pop();
+            }
+            if(stack.size() == 0)
+                right[i] = heights.length;
+            else
+                right[i] = stack.peek();
+             
+            stack.push(i);
+        }
+    }
+}
+
+Can be ignored
 ********* Stack Approach ************
 
 class Solution {
