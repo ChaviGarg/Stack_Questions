@@ -21,6 +21,11 @@ class MinStack {
          if(! aux.empty() && removed == aux.peek())
             aux.pop();
     }
+    // if we compare like this -> stack.peek() == aux.peek(), it will give wrong results if it doesn't fall in a certain range -128 and 127 (inclusive)
+    because we have value as int and Stack is of type Integer. It will do autoboxing for a certain range.
+    Refer below links to get clarity
+    https://stackoverflow.com/questions/13098143/why-does-the-behavior-of-the-integer-constant-pool-change-at-127
+    https://stackoverflow.com/questions/52224835/stack-peek-comparison-returns-wrong-result-for-1024
     
     public int top() {
         
